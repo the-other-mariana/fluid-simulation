@@ -165,6 +165,7 @@ if __name__ == "__main__":
     try:
         import matplotlib.pyplot as plt
         from matplotlib import animation
+        from matplotlib.animation import writers
 
         inst = Fluid()
 
@@ -186,9 +187,12 @@ if __name__ == "__main__":
 
         # plot vector field
         q = plt.quiver(inst.velo[:, :, 1], inst.velo[:, :, 0], scale=10, angles='xy')
-        anim = animation.FuncAnimation(fig, update_im, interval=0)
+        anim = animation.FuncAnimation(fig, update_im, interval=1)
+        Writer = writers["ffmpeg"]
+        writer = Writer(fps=30, metadata={'artist':'mariana'}, bitrate=1800)
+        anim.save('test.mp4', writer)
         #anim.save("movie.mp4", fps=30, extra_args=['-vcodec', 'libx264'])
-        plt.show()
+        #plt.show()
 
     except ImportError:
         import imageio

@@ -1,5 +1,7 @@
 # Fluid Simulation
 
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/output/example01.png?raw=true)
+
 ## Usage
 
 1. Download this repo and store it in your computer.

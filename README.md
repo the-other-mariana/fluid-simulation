@@ -1,6 +1,6 @@
 # Fluid Simulation
 
-![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/output/example01.png?raw=true)
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/cover.gif) <br />
 
 ## Usage
 
@@ -19,7 +19,7 @@ $ pip install ffmpeg
 4. Type to run:
 
 ```
-$ python fluid.py
+$ python fluid.py -i config.json
 ```
 ## Install FFmpeg on Windows
  Apart from the pip installation of ffmpeg, you need to install ffmpeg for your machine OS (in my case, Windows 10) by going to either of the following links:

@@ -5,7 +5,9 @@ and the mike ash vulgarization https://mikeash.com/pyblog/fluid-simulation-for-d
 https://github.com/Guilouf/python_realtime_fluidsim
 """
 import numpy as np
+import sys, argparse
 import math
+import json
 
 
 class Fluid:
@@ -27,8 +29,8 @@ class Fluid:
         self.density = np.full((self.size, self.size), 0, dtype=float)  # Current density
 
         # array of 2d vectors, [x, y]
-        self.velo = np.full((self.size, self.size, 2), 0, dtype=float)
-        self.velo0 = np.full((self.size, self.size, 2), 0, dtype=float)
+        self.velo = np.full((self.size, self.size, 2), 0, dtype=float) # current velocity
+        self.velo0 = np.full((self.size, self.size, 2), 0, dtype=float) # previous velocity
 
     def step(self):
         self.diffuse(self.velo0, self.velo, self.visc)
@@ -160,20 +162,61 @@ class Fluid:
             self.roty = self.rotx
         return self.rotx, self.roty
 
+FRAMES = 200
+CONFIG = {}
+f = ""
 
-if __name__ == "__main__":
+def readConfig():
+    global CONFIG
+
+    file = open(f, 'r')
+    CONFIG = json.load(file)
+    print(CONFIG)
+
+
+def processArgs():
+    global f
+    # parse arguments
+    parser = argparse.ArgumentParser(description="Runs fluid simulation improvement by Mariana Avalos (the-other-mariana).")
+    parser.add_argument('-i', '--input', type=str, required=True,help="[STRING] Determines the initial config filename.")
+    args = parser.parse_args()
+
+    if len(sys.argv) < 2:
+        return False
+    elif bool(args.input):
+        f = str(args.input)
+    print("SUCCESS Loaded input params.")
+    return True
+
+
+def main() -> None:
+    global f
     try:
         import matplotlib.pyplot as plt
         from matplotlib import animation
         from matplotlib.animation import writers
 
+        if not processArgs():
+            print("Please provide command line arguments by typing: python fluid.py -h")
+            return
+
+        readConfig()
+
         inst = Fluid()
 
         def update_im(i):
+            # notes:
+            # source size will be density box size
+            # velocity position will be averaged with density position
+
             # We add new density creators in here
-            inst.density[14:17, 14:17] += 100  # add density into a 3*3 square
-            # We add velocity vector values in here
-            inst.velo[20, 20] = [-2, -2]
+            sources = CONFIG['sources']
+            for s in sources:
+                inst.density[s['position']['y']:s['position']['y'] + s['size'], s['position']['x']:s['position']['x'] + s['size']] += s['density']  # add density into a 3*3 square
+                # We add velocity vector values in here
+                dPos = int(s['size'] / 2.0)
+                inst.velo[s['position']['y'] + dPos, s['position']['x'] + dPos] = [s['velocity']['y'], s['velocity']['x'] * np.sin(0.5 * i)] # [y, x] # y positive goes down
+
             inst.step()
             im.set_array(inst.density)
             q.set_UVC(inst.velo[:, :, 1], inst.velo[:, :, 0])
@@ -187,7 +230,8 @@ if __name__ == "__main__":
 
         # plot vector field
         q = plt.quiver(inst.velo[:, :, 1], inst.velo[:, :, 0], scale=10, angles='xy')
-        anim = animation.FuncAnimation(fig, update_im, interval=1)
+        anim = animation.FuncAnimation(fig, update_im, interval=1, frames=FRAMES)
+
         Writer = writers["ffmpeg"]
         writer = Writer(fps=30, metadata={'artist':'mariana'}, bitrate=1800)
         anim.save('test.mp4', writer)
@@ -211,3 +255,7 @@ if __name__ == "__main__":
             video[step] = flu.density
 
         imageio.mimsave('./video.gif', video.astype('uint8'))
+
+# call main
+if __name__ == '__main__':
+    main()

@@ -24,5 +24,18 @@
               "y": -2
             }
         }
+    ],
+    "objects": [
+      {
+        "position": {
+          "x": 30,
+          "y": 10
+        },
+        "size": {
+          "height": 4,
+          "width": 4
+        },
+        "density": 400
+      }
     ]
 }

@@ -21,6 +21,7 @@ $ pip install ffmpeg
 ```
 $ python fluid.py -i config.json
 ```
+
 ## Install FFmpeg on Windows
  Apart from the pip installation of ffmpeg, you need to install ffmpeg for your machine OS (in my case, Windows 10) by going to either of the following links:
 
@@ -41,3 +42,6 @@ $ python fluid.py -i config.json
 	```
 	$ ffmpeg -version
 	```
+## Handy Links
+
+- [Normalize Color in Matplotlib](https://stackoverflow.com/questions/48228692/maintaining-one-colorbar-for-maptlotlib-funcanimation)

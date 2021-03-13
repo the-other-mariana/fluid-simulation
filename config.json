@@ -6,7 +6,7 @@
               "y": 40
             },
             "size": 3,
-            "density": 100,
+            "density": 200,
             "velocity": {
               "x": 2,
               "y": -2
@@ -18,7 +18,7 @@
               "y": 40
             },
             "size": 3,
-            "density": 100,
+            "density": 200,
             "velocity": {
               "x": 3,
               "y": -2

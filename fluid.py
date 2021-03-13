@@ -85,11 +85,48 @@ class Fluid:
         table[self.size - 1, self.size - 1] = 0.5 * table[self.size - 2, self.size - 1] + \
                                               table[self.size - 1, self.size - 2]
         # objects
-        objects = [np.array([[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])]
+        # objects = [np.array([[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])]
+        objects = [np.zeros((4, 4), dtype=float)]
         obj = objects[0]
         positions = [[10, 30]]
         pos = positions[0]
-        table[pos[0]:pos[0] + len(obj), pos[1]:pos[1] + len(obj[0])] = 0 * table[pos[0]:pos[0] + len(obj), pos[1]:pos[1] + len(obj[0])]
+        #table[pos[0]:pos[0] + len(obj), pos[1]:pos[1] + len(obj[0])] = 0 * table[pos[0]:pos[0] + len(obj), pos[1]:pos[1] + len(obj[0])]
+        newTable = table.copy()
+        d = 20
+        if len(table.shape) > 2:
+            for i in range(-1, len(obj) + 1, 1):
+                for j in range(-1, len(obj[0]) + 1, 1):
+
+                    if i == -1 and j > -1 and j < len(obj[0]):
+                        table[pos[0] + i, pos[1] + j, 1] = - 2*table[pos[0] + i - 1, pos[1] + j, 1]
+                        self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i - 1, pos[1] + j, 1])
+                    if i == len(obj) and j > -1 and j < len(obj[0]):
+                        table[pos[0] + i, pos[1] + j, 1] = - 2*table[pos[0] + i + 1, pos[1] + j, 1]
+                        self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i + 1, pos[1] + j, 1])
+                    if j == -1 and i > -1 and i < len(obj):
+                        table[pos[0] + i, pos[1] + j, 0] = - 2*table[pos[0] + i, pos[1] + j - 1, 0]
+                        self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j - 1, 0])
+                    if j == len(obj[0]) and i > -1 and i < len(obj):
+                        table[pos[0] + i, pos[1] + j, 0] = - 2*table[pos[0] + i, pos[1] + j + 1, 0]
+                        self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j + 1, 0])
+                    elif i > -1 and i < len(obj) and j > -1 and j < len(obj[0]):
+                        table[pos[0] + i, pos[1] + j] = 0.0
+                        self.density[pos[0] + i, pos[1] + j] = 400
+
+
+            #table[:,:,:] = newTable[:,:,:]
+
+    def directNeighbourValues(self, i, j, table):
+        value = 0
+        if j+1 < table.shape[1]:
+            value += table[i, j+1]
+        if i+1 < table.shape[0]:
+            value += table[i+1, j]
+        if j-1 >= 0:
+            value += table[i, j-1]
+        if i-1 >= 0:
+            value += table[i-1, j]
+        return value
 
     def diffuse(self, x, x0, diff):
         if diff != 0:
@@ -240,8 +277,8 @@ def main() -> None:
         fig = plt.figure()
 
         # plot density
-        im = plt.imshow(inst.density, vmax=100, interpolation='bilinear')
-
+        im = plt.imshow(inst.density, vmin=0, vmax=1, interpolation='bilinear')
+        plt.colorbar(im)
         # plot vector field
         q = plt.quiver(inst.velo[:, :, 1], inst.velo[:, :, 0], scale=10, angles='xy')
         anim = animation.FuncAnimation(fig, update_im, interval=1, frames=FRAMES)

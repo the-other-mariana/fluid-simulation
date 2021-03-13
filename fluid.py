@@ -5,9 +5,11 @@ and the mike ash vulgarization https://mikeash.com/pyblog/fluid-simulation-for-d
 https://github.com/Guilouf/python_realtime_fluidsim
 """
 import numpy as np
+import matplotlib
 import sys, argparse
 import math
 import json
+import matplotlib.cm as cm
 
 
 class Fluid:
@@ -277,8 +279,9 @@ def main() -> None:
         fig = plt.figure()
 
         # plot density
-        im = plt.imshow(inst.density, vmin=0, vmax=1, interpolation='bilinear')
-        plt.colorbar(im)
+        norm = matplotlib.colors.Normalize(vmin=1.0, vmax=1.0, clip=False)
+        im = plt.imshow(inst.density, norm=norm, interpolation='bilinear')
+        # cmap=cm.coolwarm
         # plot vector field
         q = plt.quiver(inst.velo[:, :, 1], inst.velo[:, :, 0], scale=10, angles='xy')
         anim = animation.FuncAnimation(fig, update_im, interval=1, frames=FRAMES)

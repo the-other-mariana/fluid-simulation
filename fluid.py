@@ -258,7 +258,6 @@ def main() -> None:
         inst = Fluid()
 
         def update_im(i):
-            # notes:
             # source size will be density box size
             # velocity position will be averaged with density position
 
@@ -274,13 +273,13 @@ def main() -> None:
             im.set_array(inst.density)
             q.set_UVC(inst.velo[:, :, 1], inst.velo[:, :, 0])
             # print(f"Density sum: {inst.density.sum()}")
-            im.autoscale()
 
         fig = plt.figure()
 
         # plot density
-        norm = matplotlib.colors.Normalize(vmin=1.0, vmax=1.0, clip=False)
+        norm = matplotlib.colors.Normalize(vmin=0, vmax=400)
         im = plt.imshow(inst.density, norm=norm, interpolation='bilinear')
+
         # cmap=cm.coolwarm
         # plot vector field
         q = plt.quiver(inst.velo[:, :, 1], inst.velo[:, :, 0], scale=10, angles='xy')

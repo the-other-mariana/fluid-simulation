@@ -35,14 +35,17 @@ class Fluid:
     def step(self):
         self.diffuse(self.velo0, self.velo, self.visc)
 
+        # for velocity
         # x0, y0, x, y
         self.project(self.velo0[:, :, 0], self.velo0[:, :, 1], self.velo[:, :, 0], self.velo[:, :, 1])
 
+        # advect for each component (x, y) of velocity
         self.advect(self.velo[:, :, 0], self.velo0[:, :, 0], self.velo0)
         self.advect(self.velo[:, :, 1], self.velo0[:, :, 1], self.velo0)
 
         self.project(self.velo[:, :, 0], self.velo[:, :, 1], self.velo0[:, :, 0], self.velo0[:, :, 1])
 
+        # for density
         self.diffuse(self.s, self.density, self.diff)
 
         self.advect(self.density, self.s, self.velo)
@@ -57,7 +60,7 @@ class Fluid:
 
             self.set_boundaries(x)
 
-    def set_boundaries(self, table):
+    def set_boundaries(self, table, objects=[], positions=[]):
         """
         Boundaries handling
         :return:
@@ -66,18 +69,27 @@ class Fluid:
         if len(table.shape) > 2:  # 3d velocity vector array
             # Simulating the bouncing effect of the velocity array
             # vertical, invert if y vector
+            # horizontal component of vel is zero in vertical walls
             table[:, 0, 1] = - table[:, 0, 1]
             table[:, self.size - 1, 1] = - table[:, self.size - 1, 1]
 
             # horizontal, invert if x vector
+            # vertical component of vel is zero in horizontal walls
             table[0, :, 0] = - table[0, :, 0]
             table[self.size - 1, :, 0] = - table[self.size - 1, :, 0]
 
+        # corners
         table[0, 0] = 0.5 * (table[1, 0] + table[0, 1])
         table[0, self.size - 1] = 0.5 * (table[1, self.size - 1] + table[0, self.size - 2])
         table[self.size - 1, 0] = 0.5 * (table[self.size - 2, 0] + table[self.size - 1, 1])
         table[self.size - 1, self.size - 1] = 0.5 * table[self.size - 2, self.size - 1] + \
                                               table[self.size - 1, self.size - 2]
+        # objects
+        objects = [np.array([[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])]
+        obj = objects[0]
+        positions = [[10, 30]]
+        pos = positions[0]
+        table[pos[0]:pos[0] + len(obj), pos[1]:pos[1] + len(obj[0])] = 0 * table[pos[0]:pos[0] + len(obj), pos[1]:pos[1] + len(obj[0])]
 
     def diffuse(self, x, x0, diff):
         if diff != 0:
@@ -86,6 +98,7 @@ class Fluid:
         else:  # equivalent to lin_solve with a = 0
             x[:, :] = x0[:, :]
 
+    # for velocity, adds realistic swirly flows
     def project(self, velo_x, velo_y, p, div):
         # numpy equivalent to this in a for loop:
         # div[i, j] = -0.5 * (velo_x[i + 1, j] - velo_x[i - 1, j] + velo_y[i, j + 1] - velo_y[i, j - 1]) / self.size
@@ -103,6 +116,7 @@ class Fluid:
 
         self.set_boundaries(self.velo)
 
+    # advect means for density: it must move along velocity field, for velocity: it must move along itself
     def advect(self, d, d0, velocity):
         dtx = self.dt * (self.size - 2)
         dty = self.dt * (self.size - 2)

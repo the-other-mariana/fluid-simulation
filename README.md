@@ -22,6 +22,20 @@ $ pip install ffmpeg
 $ python fluid.py -i config.json
 ```
 
+## Features
+
+- Sources Placement <br />
+
+Inside the [comfig.json](https://github.com/the-other-mariana/fluid-simulation/blob/master/config.json) file, you can specify the characteristics of an **emitter** you want to place. An emitter is a source of density and certain velocity. <br />
+
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/cover.gif)<br />
+
+- Object Placement <br />
+
+Inside the [comfig.json](https://github.com/the-other-mariana/fluid-simulation/blob/master/config.json) file, you can specify the position and shape of a solid object inside the fluid. <br />
+
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/objects.gif)<br />
+
 ## Install FFmpeg on Windows
  Apart from the pip installation of ffmpeg, you need to install ffmpeg for your machine OS (in my case, Windows 10) by going to either of the following links:
 
@@ -44,4 +58,4 @@ $ python fluid.py -i config.json
 	```
 ## Handy Links
 
-- [Normalize Color in Matplotlib](https://stackoverflow.com/questions/48228692/maintaining-one-colorbar-for-maptlotlib-funcanimation)
+- [Normalize Color in Matplotlib](https://stackoverflow.com/questions/48228692/maintaining-one-colorbar-for-maptlotlib-funcanimation) <br />

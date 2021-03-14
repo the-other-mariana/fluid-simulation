@@ -24,6 +24,12 @@ $ python fluid.py -i config.json
 
 ## Features
 
+- Color Scheme <br />
+
+Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/blob/master/config.json) file, change the `color` property and write the color scheme you want from the list below. <br />
+
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/color-maps.png?raw=true)<br />
+
 - Sources Placement <br />
 
 Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/blob/master/config.json) file, you can specify the characteristics of an **emitter** you want to place. An emitter is a source of density and certain velocity. <br />

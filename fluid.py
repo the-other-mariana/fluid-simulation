@@ -11,6 +11,7 @@ import math
 import json
 import matplotlib.cm as cm
 from colors import colors
+from vector import Vector, eps
 
 
 class Fluid:
@@ -95,30 +96,86 @@ class Fluid:
             obj = np.zeros((o['size']['height'], o['size']['width']), dtype=float)
             pos = [o['position']['y'], o['position']['x']]
 
-            d = 20
+            d = 5
             if len(table.shape) > 2:
                 for i in range(-1, len(obj) + 1, 1):
                     for j in range(-1, len(obj[0]) + 1, 1):
 
                         if i == -1 and -1 < j < len(obj[0]):
-                            table[pos[0] + i, pos[1] + j, 1] = - 2 * table[pos[0] + i - 1, pos[1] + j, 1]
+                            # top horizontal border
+                            #table[pos[0] + i, pos[1] + j, 1] = - 2 * table[pos[0] + i - 1, pos[1] + j, 1]
+                            #self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i - 1, pos[1] + j, 1])
+                            normal = Vector(0,1)
+                            x = table[pos[0] + i - 1, pos[1] + j, 0]
+                            y = table[pos[0] + i - 1, pos[1] + j, 1]
+                            if x < eps and y < eps:
+                                continue
+                            v = Vector(x, y)
+                            vNorm = v.normalized()
+                            angle = math.acos(vNorm.dot(normal))
+                            x = v.length * math.sin(angle)
+                            y = v.length * math.cos(angle)
+                            table[pos[0] + i, pos[1] + j] = [x, y]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i - 1, pos[1] + j, 1])
 
                         if i == len(obj) and -1 < j < len(obj[0]):
-                            table[pos[0] + i, pos[1] + j, 1] = - 2 * table[pos[0] + i + 1, pos[1] + j, 1]
+                            # bottom horizontal border
+                            #table[pos[0] + i, pos[1] + j, 1] = - 2 * table[pos[0] + i + 1, pos[1] + j, 1]
+                            #self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i + 1, pos[1] + j, 1])
+
+                            normal = Vector(0, -1)
+                            x = table[pos[0] + i + 1, pos[1] + j, 0]
+                            y = table[pos[0] + i + 1, pos[1] + j, 1]
+                            if x < eps and y < eps:
+                                continue
+                            v = Vector(x, y)
+                            vNorm = v.normalized()
+                            angle = math.acos(vNorm.dot(normal))
+                            #print(v.length, x, y)
+                            x = v.length * math.sin(angle)
+                            y = v.length * math.cos(angle)
+                            table[pos[0] + i, pos[1] + j] = [x, y]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i + 1, pos[1] + j, 1])
 
                         if j == -1 and -1 < i < len(obj):
-                            table[pos[0] + i, pos[1] + j, 0] = - 2 * table[pos[0] + i, pos[1] + j - 1, 0]
+                            # left vertical border
+                            #table[pos[0] + i, pos[1] + j, 0] = - 2 * table[pos[0] + i, pos[1] + j - 1, 0]
+                            #self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j - 1, 0])
+
+                            normal = Vector(1, 0)
+                            x = table[pos[0] + i, pos[1] + j - 1, 0]
+                            y = table[pos[0] + i, pos[1] + j - 1, 1]
+                            if x < eps and y < eps:
+                                continue
+                            v = Vector(x, y)
+                            vNorm = v.normalized()
+                            angle = math.acos(vNorm.dot(normal))
+                            x = v.length * math.sin(angle)
+                            y = v.length * math.cos(angle)
+                            table[pos[0] + i, pos[1] + j] = [x, y]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j - 1, 0])
 
                         if j == len(obj[0]) and -1 < i < len(obj):
-                            table[pos[0] + i, pos[1] + j, 0] = - 2 * table[pos[0] + i, pos[1] + j + 1, 0]
+                            # right vertical border
+                            #table[pos[0] + i, pos[1] + j, 0] = - 2 * table[pos[0] + i, pos[1] + j + 1, 0]
+                            #self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j + 1, 0])
+                            normal = Vector(-1, 0)
+                            x = table[pos[0] + i, pos[1] + j + 1, 0]
+                            y = table[pos[0] + i, pos[1] + j + 1, 1]
+                            if x < eps and y < eps:
+                                continue
+                            v = Vector(x, y)
+                            vNorm = v.normalized()
+                            angle = math.acos(vNorm.dot(normal))
+                            x = v.length * math.sin(angle)
+                            y = v.length * math.cos(angle)
+                            table[pos[0] + i, pos[1] + j] = [x, y]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j + 1, 0])
 
                         elif -1 < i < len(obj) and -1 < j < len(obj[0]):
                             table[pos[0] + i, pos[1] + j] = 0.0
                             self.density[pos[0] + i, pos[1] + j] = o['density']
+
 
     def directNeighbourValues(self, i, j, table):
         value = 0

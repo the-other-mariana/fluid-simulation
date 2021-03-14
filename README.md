@@ -30,6 +30,10 @@ Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/b
 
 ![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/color-maps-02.png?raw=true)<br />
 
+For example, by having 'bone' as the `color` property in the json file, you get the following: <br />
+
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/colors.gif)<br />
+
 - **Sources Placement** <br />
 
 Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/blob/master/config.json) file, you can specify the characteristics of an **emitter** you want to place. An emitter is a source of density and certain velocity. <br />
@@ -40,7 +44,7 @@ Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/b
 
 Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/blob/master/config.json) file, you can specify the position and shape of a solid object inside the fluid. <br />
 
-![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/objects.gif)<br />
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/objects02.gif)<br />
 
 ## Install FFmpeg on Windows
  Apart from the pip installation of ffmpeg, you need to install ffmpeg for your machine OS (in my case, Windows 10) by going to either of the following links:

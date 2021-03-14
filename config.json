@@ -1,5 +1,5 @@
 {
-    "color": "viridis",
+    "color": "bone",
     "sources":[
         {
             "position": {
@@ -34,7 +34,7 @@
             },
             "size": {
               "height": 4,
-              "width": 4
+              "width": 6
             },
             "density": 400
         }

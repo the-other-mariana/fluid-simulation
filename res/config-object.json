@@ -1,5 +1,4 @@
 {
-    "color": "viridis",
     "sources":[
         {
             "position": {
@@ -27,16 +26,16 @@
         }
     ],
     "objects": [
-        {
-            "position": {
-              "x": 30,
-              "y": 10
-            },
-            "size": {
-              "height": 4,
-              "width": 4
-            },
-            "density": 400
-        }
+      {
+        "position": {
+          "x": 30,
+          "y": 10
+        },
+        "size": {
+          "height": 4,
+          "width": 4
+        },
+        "density": 400
+      }
     ]
 }

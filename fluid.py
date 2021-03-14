@@ -10,6 +10,7 @@ import sys, argparse
 import math
 import json
 import matplotlib.cm as cm
+from colors import colors
 
 
 class Fluid:
@@ -102,15 +103,19 @@ class Fluid:
                         if i == -1 and -1 < j < len(obj[0]):
                             table[pos[0] + i, pos[1] + j, 1] = - 2 * table[pos[0] + i - 1, pos[1] + j, 1]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i - 1, pos[1] + j, 1])
+
                         if i == len(obj) and -1 < j < len(obj[0]):
                             table[pos[0] + i, pos[1] + j, 1] = - 2 * table[pos[0] + i + 1, pos[1] + j, 1]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i + 1, pos[1] + j, 1])
+
                         if j == -1 and -1 < i < len(obj):
                             table[pos[0] + i, pos[1] + j, 0] = - 2 * table[pos[0] + i, pos[1] + j - 1, 0]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j - 1, 0])
+
                         if j == len(obj[0]) and -1 < i < len(obj):
                             table[pos[0] + i, pos[1] + j, 0] = - 2 * table[pos[0] + i, pos[1] + j + 1, 0]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j + 1, 0])
+
                         elif -1 < i < len(obj) and -1 < j < len(obj[0]):
                             table[pos[0] + i, pos[1] + j] = 0.0
                             self.density[pos[0] + i, pos[1] + j] = o['density']
@@ -247,10 +252,13 @@ def main() -> None:
         from matplotlib.animation import writers
 
         if not processArgs():
-            print("Please provide command line arguments by typing: python fluid.py -h")
+            print("ERROR - Please provide command line arguments by typing: python fluid.py -h")
             return
 
         readConfig()
+        if CONFIG['color'] not in colors:
+            print("ERROR - Invalid color scheme. Color param must be one from colors.py")
+            return
 
         inst = Fluid()
 
@@ -275,7 +283,7 @@ def main() -> None:
 
         # plot density
         norm = matplotlib.colors.Normalize(vmin=0, vmax=400)
-        im = plt.imshow(inst.density, norm=norm, interpolation='bilinear')
+        im = plt.imshow(inst.density, norm=norm, interpolation='bilinear', cmap=CONFIG['color'])
 
         # cmap=cm.coolwarm
         # plot vector field

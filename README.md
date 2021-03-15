@@ -1,6 +1,6 @@
 # Fluid Simulation
 
-![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/cover.gif) <br />
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/reflection.png?raw=true) <br />
 
 ## Usage
 

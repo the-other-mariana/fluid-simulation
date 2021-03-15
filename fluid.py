@@ -112,7 +112,7 @@ class Fluid:
                             v = Vector(x, y)
                             reflected = Vector.reflect(v, normal)
                             table[pos[0] + i, pos[1] + j] = [reflected.x, reflected.y]
-                            self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i - 1, pos[1] + j, 1])
+                            self.density[pos[0] + i, pos[1] + j] += d * (abs(table[pos[0] + i - 1, pos[1] + j, 1]) + abs(table[pos[0] + i - 1, pos[1] + j, 0])) * 0.5
 
                         if i == len(obj) and -1 < j < len(obj[0]):
                             # bottom horizontal border
@@ -127,7 +127,7 @@ class Fluid:
                             v = Vector(x, y)
                             reflected = Vector.reflect(v, normal)
                             table[pos[0] + i, pos[1] + j] = [reflected.x, reflected.y]
-                            self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i + 1, pos[1] + j, 1])
+                            self.density[pos[0] + i, pos[1] + j] += d * (abs(table[pos[0] + i + 1, pos[1] + j, 1]) + abs(table[pos[0] + i + 1, pos[1] + j, 0])) * 0.5
 
                         if j == -1 and -1 < i < len(obj):
                             # left vertical border
@@ -142,7 +142,7 @@ class Fluid:
                             v = Vector(x, y)
                             reflected = Vector.reflect(v, normal)
                             table[pos[0] + i, pos[1] + j] = [reflected.x, reflected.y]
-                            self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j - 1, 0])
+                            self.density[pos[0] + i, pos[1] + j] += d * (abs(table[pos[0] + i, pos[1] + j - 1, 0]) + abs(table[pos[0] + i, pos[1] + j - 1, 1])) * 0.5
 
                         if j == len(obj[0]) and -1 < i < len(obj):
                             # right vertical border
@@ -156,7 +156,7 @@ class Fluid:
                             v = Vector(x, y)
                             reflected = Vector.reflect(v, normal)
                             table[pos[0] + i, pos[1] + j] = [reflected.x, reflected.y]
-                            self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j + 1, 0])
+                            self.density[pos[0] + i, pos[1] + j] += d * (abs(table[pos[0] + i, pos[1] + j + 1, 0]) + abs(table[pos[0] + i, pos[1] + j + 1, 1])) * 0.5
 
                         elif -1 < i < len(obj) and -1 < j < len(obj[0]):
                             table[pos[0] + i, pos[1] + j] = 0.0
@@ -284,7 +284,7 @@ def processArgs():
         return False
     elif bool(args.input):
         f = str(args.input)
-    print("SUCCESS Loaded input params.")
+    print("SUCCESS - Loaded input params.")
     return True
 
 
@@ -306,9 +306,9 @@ def main() -> None:
 
         inst = Fluid()
 
-        def update_im(i):
-            # source size will be density box size
-            # velocity position will be averaged with density position
+        def update_im(i, ax):
+            # source size is density box size
+            # velocity position is averaged with density position
 
             # We add new density creators in here
             sources = CONFIG['sources']
@@ -320,10 +320,13 @@ def main() -> None:
 
             inst.step()
             im.set_array(inst.density)
+            ax.set_title("Fluid Simulation\nFrame = {0}".format(i + 1))
+
+            #plt.savefig("frame_{0}.png".format(i), bbox_inches='tight', dpi=100)
             q.set_UVC(inst.velo[:, :, 1], inst.velo[:, :, 0])
             # print(f"Density sum: {inst.density.sum()}")
 
-        fig = plt.figure()
+        fig, ax = plt.subplots()
 
         # plot density
         norm = matplotlib.colors.Normalize(vmin=0, vmax=400)
@@ -332,7 +335,7 @@ def main() -> None:
         # cmap=cm.coolwarm
         # plot vector field
         q = plt.quiver(inst.velo[:, :, 1], inst.velo[:, :, 0], scale=10, angles='xy')
-        anim = animation.FuncAnimation(fig, update_im, interval=1, frames=FRAMES)
+        anim = animation.FuncAnimation(fig, update_im, fargs=(ax, ), interval=1, frames=FRAMES)
 
         Writer = writers["ffmpeg"]
         writer = Writer(fps=30, metadata={'artist':'mariana'}, bitrate=1800)

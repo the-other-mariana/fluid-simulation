@@ -90,9 +90,9 @@ class Fluid:
                                               table[self.size - 1, self.size - 2]
         # objects
         objects = CONFIG['objects']
-        for i in range(len(objects)):
+        for k in range(len(objects)):
             # objects = [np.zeros((4, 4), dtype=float)]
-            o = objects[i]
+            o = objects[k]
             obj = np.zeros((o['size']['height'], o['size']['width']), dtype=float)
             pos = [o['position']['y'], o['position']['x']]
 
@@ -100,7 +100,6 @@ class Fluid:
             if len(table.shape) > 2:
                 for i in range(-1, len(obj) + 1, 1):
                     for j in range(-1, len(obj[0]) + 1, 1):
-
                         if i == -1 and -1 < j < len(obj[0]):
                             # top horizontal border
                             #table[pos[0] + i, pos[1] + j, 1] = - 2 * table[pos[0] + i - 1, pos[1] + j, 1]
@@ -111,11 +110,8 @@ class Fluid:
                             if x < eps and y < eps:
                                 continue
                             v = Vector(x, y)
-                            vNorm = v.normalized()
-                            angle = math.acos(vNorm.dot(normal))
-                            x = v.length * math.sin(angle)
-                            y = v.length * math.cos(angle)
-                            table[pos[0] + i, pos[1] + j] = [x, y]
+                            reflected = Vector.reflect(v, normal)
+                            table[pos[0] + i, pos[1] + j] = [reflected.x, reflected.y]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i - 1, pos[1] + j, 1])
 
                         if i == len(obj) and -1 < j < len(obj[0]):
@@ -129,12 +125,8 @@ class Fluid:
                             if x < eps and y < eps:
                                 continue
                             v = Vector(x, y)
-                            vNorm = v.normalized()
-                            angle = math.acos(vNorm.dot(normal))
-                            #print(v.length, x, y)
-                            x = v.length * math.sin(angle)
-                            y = v.length * math.cos(angle)
-                            table[pos[0] + i, pos[1] + j] = [x, y]
+                            reflected = Vector.reflect(v, normal)
+                            table[pos[0] + i, pos[1] + j] = [reflected.x, reflected.y]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i + 1, pos[1] + j, 1])
 
                         if j == -1 and -1 < i < len(obj):
@@ -148,11 +140,8 @@ class Fluid:
                             if x < eps and y < eps:
                                 continue
                             v = Vector(x, y)
-                            vNorm = v.normalized()
-                            angle = math.acos(vNorm.dot(normal))
-                            x = v.length * math.sin(angle)
-                            y = v.length * math.cos(angle)
-                            table[pos[0] + i, pos[1] + j] = [x, y]
+                            reflected = Vector.reflect(v, normal)
+                            table[pos[0] + i, pos[1] + j] = [reflected.x, reflected.y]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j - 1, 0])
 
                         if j == len(obj[0]) and -1 < i < len(obj):
@@ -165,16 +154,14 @@ class Fluid:
                             if x < eps and y < eps:
                                 continue
                             v = Vector(x, y)
-                            vNorm = v.normalized()
-                            angle = math.acos(vNorm.dot(normal))
-                            x = v.length * math.sin(angle)
-                            y = v.length * math.cos(angle)
-                            table[pos[0] + i, pos[1] + j] = [x, y]
+                            reflected = Vector.reflect(v, normal)
+                            table[pos[0] + i, pos[1] + j] = [reflected.x, reflected.y]
                             self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j + 1, 0])
 
                         elif -1 < i < len(obj) and -1 < j < len(obj[0]):
                             table[pos[0] + i, pos[1] + j] = 0.0
                             self.density[pos[0] + i, pos[1] + j] = o['density']
+                            continue
 
 
     def directNeighbourValues(self, i, j, table):

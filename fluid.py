@@ -310,6 +310,8 @@ def getVelocityBehaviour(frame, vY, vX, id, param, noiseIndex = 0):
         for i in range(1, int(param)):
             vel[1] += 1.0 / i * np.sin((i * frame * math.pi) / vX * math.pi / 180.0)
         vel[1] *= 4 / math.pi
+    if id == 'motor':
+        vel = [vY * (np.cos(param * 7.3 * frame * math.pi / 180.0))**4 * np.sin(np.sin(2.4 * frame * math.pi / 180.0)*math.pi / 180.0), -vX * np.sin(param * 7.3 * frame * math.pi / 180.0) * np.cos(np.cos(2.4 * frame * math.pi / 180.0)*math.pi / 180.0)]
     return vel
 
 

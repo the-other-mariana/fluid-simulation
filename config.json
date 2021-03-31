@@ -8,12 +8,12 @@
               "y": 40
             },
             "size": 3,
-            "density": 200,
+            "density": 50,
             "velocity": {
               "x": 4,
               "y": -2,
-              "behaviour": "noise",
-              "factor": 10
+              "behaviour": "motor",
+              "factor": 0.5
             }
         },
         {
@@ -26,8 +26,8 @@
             "velocity": {
               "x": 3,
               "y": -2,
-              "behaviour": "zigzag horizontal",
-              "factor": 15
+              "behaviour": "zigzag vertical",
+              "factor": 0.5
             }
         }
     ],

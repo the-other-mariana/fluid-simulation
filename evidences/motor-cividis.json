@@ -1,0 +1,44 @@
+{
+    "color": "cividis",
+    "frames": 300,
+    "sources":[
+        {
+            "position": {
+              "x": 30,
+              "y": 30
+            },
+            "size": 3,
+            "density": 200,
+            "velocity": {
+              "x": 4,
+              "y": -2,
+              "behaviour": "motor",
+              "factor": 0.5
+            }
+        }
+    ],
+    "objects": [
+        {
+            "position": {
+              "x": 50,
+              "y": 26
+            },
+            "size": {
+              "height": 8,
+              "width": 2
+            },
+            "density": 400
+        },
+        {
+            "position": {
+              "x": 10,
+              "y": 26
+            },
+            "size": {
+              "height": 8,
+              "width": 2
+            },
+            "density": 400
+        }
+    ]
+}

@@ -293,6 +293,8 @@ def getVelocityBehaviour(frame, vY, vX, id, param, noiseIndex = 0):
     vel = [vY, vX]
     if id == 'zigzag vertical':
         vel = [vY, vX * np.sin(param * frame)]
+    if id == 'zigzag horizontal':
+        vel = [vY * np.sin(param * frame), vX]
     if id == 'vortex':
         vel = [np.cos(param * 0.2 * frame), np.sin(param * 0.2 * frame)]
     if id == 'noise':
@@ -302,7 +304,7 @@ def getVelocityBehaviour(frame, vY, vX, id, param, noiseIndex = 0):
             theta[str(noiseIndex)] += param
         if rand == 1:
             theta[str(noiseIndex)] -= param
-        vel = [vY * np.sin(theta[str(noiseIndex)] * 3.1416 / 180.0), vX * np.cos(theta[str(noiseIndex)] * 3.1416 / 180.0)]
+        vel = [vY * np.sin(theta[str(noiseIndex)] * math.pi / 180.0), vX * np.cos(theta[str(noiseIndex)] * math.pi / 180.0)]
     if id == 'fourier':
         vel = [vY, vX * np.sin((param / 2.0) * frame * math.pi / 180.0)]
         for i in range(1, int(param)):

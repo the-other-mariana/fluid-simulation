@@ -26,7 +26,7 @@
             "velocity": {
               "x": 3,
               "y": -2,
-              "behaviour": "noise",
+              "behaviour": "zigzag horizontal",
               "factor": 15
             }
         }

@@ -265,7 +265,7 @@ class Fluid:
 FRAMES = 200
 CONFIG = {}
 f = ""
-theta = 0
+theta = {}
 
 def readConfig():
     global CONFIG
@@ -289,7 +289,7 @@ def processArgs():
     print("SUCCESS - Loaded input params.")
     return True
 
-def getVelocityBehaviour(frame, vY, vX, id, param):
+def getVelocityBehaviour(frame, vY, vX, id, param, noiseIndex = 0):
     vel = [vY, vX]
     if id == 'zigzag vertical':
         vel = [vY, vX * np.sin(param * frame)]
@@ -297,13 +297,12 @@ def getVelocityBehaviour(frame, vY, vX, id, param):
         vel = [np.cos(param * 0.2 * frame), np.sin(param * 0.2 * frame)]
     if id == 'noise':
         global theta
-
         rand = random.randint(0, 2)
         if rand == 0:
-            theta += param
+            theta[str(noiseIndex)] += param
         if rand == 1:
-            theta -= param
-        vel = [vY * np.sin(theta * 3.1416 / 180.0), vX * np.cos(theta * 3.1416 / 180.0)]
+            theta[str(noiseIndex)] -= param
+        vel = [vY * np.sin(theta[str(noiseIndex)] * 3.1416 / 180.0), vX * np.cos(theta[str(noiseIndex)] * 3.1416 / 180.0)]
     if id == 'fourier':
         vel = [vY, vX * np.sin((param / 2.0) * frame * math.pi / 180.0)]
         for i in range(1, int(param)):
@@ -315,6 +314,7 @@ def getVelocityBehaviour(frame, vY, vX, id, param):
 
 def main() -> None:
     global f
+    global theta
     try:
         import matplotlib.pyplot as plt
         from matplotlib import animation
@@ -332,6 +332,10 @@ def main() -> None:
             print("ERROR - frames must be an integer number")
             return
 
+        for s in range(len(CONFIG['sources'])):
+            if CONFIG['sources'][s]['velocity']['behaviour'] == 'noise':
+                theta[str(s)] = 0.0
+
         inst = Fluid()
 
         def update_im(i, ax):
@@ -345,7 +349,8 @@ def main() -> None:
                 # We add velocity vector values in here
                 dPos = int(s['size'] / 2.0)
                 # [y, x] # y positive goes down
-                inst.velo[s['position']['y'] + dPos, s['position']['x'] + dPos] = getVelocityBehaviour(i, s['velocity']['y'], s['velocity']['x'], s['velocity']['behaviour'], s['velocity']['factor'])
+                velBehaviour = getVelocityBehaviour(i, s['velocity']['y'], s['velocity']['x'], s['velocity']['behaviour'], s['velocity']['factor'], sources.index(s))
+                inst.velo[s['position']['y'] + dPos, s['position']['x'] + dPos] = velBehaviour
 
             inst.step()
             im.set_array(inst.density)

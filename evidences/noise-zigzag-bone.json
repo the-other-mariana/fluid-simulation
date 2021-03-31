@@ -1,6 +1,5 @@
 {
-    "color": "inferno",
-    "frames": 200,
+    "color": "bone",
     "sources":[
         {
             "position": {
@@ -10,10 +9,10 @@
             "size": 3,
             "density": 200,
             "velocity": {
-              "x": 4,
+              "x": 1,
               "y": -2,
-              "behaviour": "fourier",
-              "factor": 6
+              "behaviour": "noise",
+              "factor": 10
             }
         },
         {

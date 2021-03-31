@@ -304,7 +304,11 @@ def getVelocityBehaviour(frame, vY, vX, id, param):
         if rand == 1:
             theta -= param
         vel = [vY * np.sin(theta * 3.1416 / 180.0), vX * np.cos(theta * 3.1416 / 180.0)]
-
+    if id == 'fourier':
+        vel = [vY, vX * np.sin((param / 2.0) * frame * math.pi / 180.0)]
+        for i in range(1, int(param)):
+            vel[1] += 1.0 / i * np.sin((i * frame * math.pi) / vX * math.pi / 180.0)
+        vel[1] *= 4 / math.pi
     return vel
 
 
@@ -323,6 +327,9 @@ def main() -> None:
         readConfig()
         if CONFIG['color'] not in colors:
             print("ERROR - Invalid color scheme. Color param must be one from colors.py")
+            return
+        if not isinstance(CONFIG['frames'], int):
+            print("ERROR - frames must be an integer number")
             return
 
         inst = Fluid()
@@ -357,7 +364,7 @@ def main() -> None:
         # cmap=cm.coolwarm
         # plot vector field
         q = plt.quiver(inst.velo[:, :, 1], inst.velo[:, :, 0], scale=10, angles='xy')
-        anim = animation.FuncAnimation(fig, update_im, fargs=(ax, ), interval=1, frames=FRAMES)
+        anim = animation.FuncAnimation(fig, update_im, fargs=(ax, ), interval=1, frames=CONFIG['frames'])
 
         Writer = writers["ffmpeg"]
         writer = Writer(fps=30, metadata={'artist':'mariana'}, bitrate=1800)

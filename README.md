@@ -69,3 +69,5 @@ Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/b
 ## Handy Links
 
 - [Normalize Color in Matplotlib](https://stackoverflow.com/questions/48228692/maintaining-one-colorbar-for-maptlotlib-funcanimation) <br />
+
+- [Fourier Series Square Wave](https://mathworld.wolfram.com/FourierSeriesSquareWave.html) <br />

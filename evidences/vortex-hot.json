@@ -1,0 +1,32 @@
+{
+    "color": "hot",
+    "sources":[
+        {
+            "position": {
+              "x": 30,
+              "y": 30
+            },
+            "size": 3,
+            "density": 50,
+            "velocity": {
+              "x": 2,
+              "y": -2,
+              "behaviour": "vortex",
+              "factor": 0.5
+            }
+        }
+    ],
+    "objects": [
+        {
+            "position": {
+              "x": 30,
+              "y": 10
+            },
+            "size": {
+              "height": 4,
+              "width": 6
+            },
+            "density": 400
+        }
+    ]
+}

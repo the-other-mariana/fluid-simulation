@@ -1,9 +1,9 @@
 {
-    "color": "summer",
+    "color": "cubehelix",
     "sources":[
         {
             "position": {
-              "x": 20,
+              "x": 30,
               "y": 40
             },
             "size": 3,
@@ -13,20 +13,6 @@
               "y": -2,
               "behaviour": "noise",
               "factor": 10
-            }
-        },
-        {
-            "position": {
-              "x": 40,
-              "y": 40
-            },
-            "size": 3,
-            "density": 200,
-            "velocity": {
-              "x": 3,
-              "y": -2,
-              "behaviour": "zigzag vertical",
-              "factor": 0.5
             }
         }
     ],

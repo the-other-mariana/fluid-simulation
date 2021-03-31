@@ -12,6 +12,7 @@ import json
 import matplotlib.cm as cm
 from colors import colors
 from vector import Vector, eps
+import random
 
 
 class Fluid:
@@ -264,6 +265,7 @@ class Fluid:
 FRAMES = 200
 CONFIG = {}
 f = ""
+theta = 0
 
 def readConfig():
     global CONFIG
@@ -286,6 +288,25 @@ def processArgs():
         f = str(args.input)
     print("SUCCESS - Loaded input params.")
     return True
+
+def getVelocityBehaviour(frame, vY, vX, id, param):
+    vel = [vY, vX]
+    if id == 'zigzag vertical':
+        vel = [vY, vX * np.sin(param * frame)]
+    if id == 'vortex':
+        vel = [np.cos(param * 0.2 * frame), np.sin(param * 0.2 * frame)]
+    if id == 'noise':
+        global theta
+
+        rand = random.randint(0, 2)
+        if rand == 0:
+            theta += param
+        if rand == 1:
+            theta -= param
+        vel = [vY * np.sin(theta * 3.1416 / 180.0), vX * np.cos(theta * 3.1416 / 180.0)]
+
+    return vel
+
 
 
 def main() -> None:
@@ -316,7 +337,8 @@ def main() -> None:
                 inst.density[s['position']['y']:s['position']['y'] + s['size'], s['position']['x']:s['position']['x'] + s['size']] += s['density']  # add density into a 3*3 square
                 # We add velocity vector values in here
                 dPos = int(s['size'] / 2.0)
-                inst.velo[s['position']['y'] + dPos, s['position']['x'] + dPos] = [s['velocity']['y'], s['velocity']['x'] * np.sin(0.5 * i)] # [y, x] # y positive goes down
+                # [y, x] # y positive goes down
+                inst.velo[s['position']['y'] + dPos, s['position']['x'] + dPos] = getVelocityBehaviour(i, s['velocity']['y'], s['velocity']['x'], s['velocity']['behaviour'], s['velocity']['factor'])
 
             inst.step()
             im.set_array(inst.density)

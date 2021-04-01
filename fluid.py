@@ -90,6 +90,7 @@ class Fluid:
         table[self.size - 1, self.size - 1] = 0.5 * table[self.size - 2, self.size - 1] + \
                                               table[self.size - 1, self.size - 2]
         # objects
+        global eObjPos
         objects = CONFIG['objects']
         for k in range(len(objects)):
             # objects = [np.zeros((4, 4), dtype=float)]
@@ -97,10 +98,17 @@ class Fluid:
             obj = np.zeros((o['size']['height'], o['size']['width']), dtype=float)
             pos = [o['position']['y'], o['position']['x']]
 
+            if pos[0] < 0 or pos[0] >= self.size or pos[1] < 0 or pos[1] >= self.size:
+                eObjPos = True
+                continue
+
             d = 5
             if len(table.shape) > 2:
                 for i in range(-1, len(obj) + 1, 1):
                     for j in range(-1, len(obj[0]) + 1, 1):
+                        if (pos[0] + i + 2) >= self.size or (pos[0] + i - 2) < 0 or (pos[1] + j + 2) >= self.size or (pos[1] + j - 2) < 0:
+                            eObjPos = True
+                            continue
                         if i == -1 and -1 < j < len(obj[0]):
                             # top horizontal border
                             #table[pos[0] + i, pos[1] + j, 1] = - 2 * table[pos[0] + i - 1, pos[1] + j, 1]
@@ -267,6 +275,7 @@ CONFIG = {}
 f = ""
 theta = {}
 eSourcePos = False
+eObjPos = False
 
 def readConfig():
     global CONFIG
@@ -385,6 +394,8 @@ def main() -> None:
                 # error flag logs
                 if eSourcePos:
                     print("WARNING - Source position out of bounds. Source will be ignored.")
+                if eObjPos:
+                    print("WARNING - Object position out of bounds. Object will be ignored fully or partially.")
 
         fig, ax = plt.subplots()
 

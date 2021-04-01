@@ -11,6 +11,7 @@ import math
 import json
 import matplotlib.cm as cm
 from colors import colors
+from behaviours import behaviours
 from vector import Vector, eps
 import random
 
@@ -276,6 +277,7 @@ f = ""
 theta = {}
 eSourcePos = False
 eObjPos = False
+eBehaviour = False
 
 def readConfig():
     global CONFIG
@@ -329,25 +331,40 @@ def getVelocityBehaviour(frame, vY, vX, id, param, noiseIndex = 0):
 def main() -> None:
     global f
     global theta
+    global eBehaviour
+
     try:
         import matplotlib.pyplot as plt
         from matplotlib import animation
         from matplotlib.animation import writers
 
+        # valid args
         if not processArgs():
             print("ERROR - Please provide command line arguments by typing: python fluid.py -h")
             return
-
+        # load json
         readConfig()
+
+        # valid color scheme
         if CONFIG['color'] not in colors:
             print("ERROR - Invalid color scheme. Color param must be one from colors.py:")
             for color in colors:
                 print(f"\t{color}")
             return
+        # valid velocity behaviour in sources
+        for s in CONFIG['sources']:
+            if s['velocity']['behaviour'] not in behaviours:
+                eBehaviour = True
+        if eBehaviour:
+            print("ERROR - Invalid velocity behaviour. Velocity behaviour param must be one from behaviours.py:")
+            for b in behaviours:
+                print(f"\t{b}")
+            return
+        # valid frame number
         if not isinstance(CONFIG['frames'], int):
             print("ERROR - frames must be an integer number")
             return
-
+        # init map for theta angles in noise behaviours
         for s in range(len(CONFIG['sources'])):
             if CONFIG['sources'][s]['velocity']['behaviour'] == 'noise':
                 theta[str(s)] = 0.0

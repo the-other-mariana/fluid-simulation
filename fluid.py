@@ -330,7 +330,9 @@ def main() -> None:
 
         readConfig()
         if CONFIG['color'] not in colors:
-            print("ERROR - Invalid color scheme. Color param must be one from colors.py")
+            print("ERROR - Invalid color scheme. Color param must be one from colors.py:")
+            for color in colors:
+                print(f"\t{color}")
             return
         if not isinstance(CONFIG['frames'], int):
             print("ERROR - frames must be an integer number")

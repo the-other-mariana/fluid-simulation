@@ -266,6 +266,7 @@ FRAMES = 200
 CONFIG = {}
 f = ""
 theta = {}
+eSourcePos = False
 
 def readConfig():
     global CONFIG
@@ -345,16 +346,30 @@ def main() -> None:
         inst = Fluid()
 
         def update_im(i, ax):
+            global eSourcePos
             # source size is density box size
             # velocity position is averaged with density position
 
             # We add new density creators in here
             sources = CONFIG['sources']
             for s in sources:
-                inst.density[s['position']['y']:s['position']['y'] + s['size'], s['position']['x']:s['position']['x'] + s['size']] += s['density']  # add density into a 3*3 square
-                # We add velocity vector values in here
                 dPos = int(s['size'] / 2.0)
-                # [y, x] # y positive goes down
+                # boundary condition: source start coord is out of bounds
+                if s['position']['y'] < 0 or s['position']['y'] >= inst.size or s['position']['x'] < 0 or s['position']['x'] >= inst.size:
+                    eSourcePos = True
+                    continue
+                # boundary condition: source ending coord is out of bounds
+                if (s['position']['y'] + s['size']) < 0 or (s['position']['y'] + s['size']) >= inst.size or (s['position']['x'] + s['size']) < 0 or (s['position']['x'] + s['size']) >= inst.size:
+                    eSourcePos = True
+                    continue
+                # boundary condition: velocity averaged position is out of bounds
+                if (s['position']['y'] + dPos) < 0 or (s['position']['y'] + dPos) >= inst.size or (s['position']['x'] + dPos) < 0 or (s['position']['x'] + dPos) >= inst.size:
+                    eSourcePos = True
+                    continue
+
+                inst.density[s['position']['y']:s['position']['y'] + s['size'], s['position']['x']:s['position']['x'] + s['size']] += abs(s['density'])  # add density into a 3*3 square
+
+                # v = [y, x] where y positive goes down
                 velBehaviour = getVelocityBehaviour(i, s['velocity']['y'], s['velocity']['x'], s['velocity']['behaviour'], s['velocity']['factor'], sources.index(s))
                 inst.velo[s['position']['y'] + dPos, s['position']['x'] + dPos] = velBehaviour
 
@@ -365,6 +380,11 @@ def main() -> None:
             #plt.savefig("frame_{0}.png".format(i), bbox_inches='tight', dpi=100)
             q.set_UVC(inst.velo[:, :, 1], inst.velo[:, :, 0])
             # print(f"Density sum: {inst.density.sum()}")
+
+            if i == CONFIG['frames'] - 1:
+                # error flag logs
+                if eSourcePos:
+                    print("WARNING - Source position out of bounds. Source will be ignored.")
 
         fig, ax = plt.subplots()
 

@@ -1,10 +1,10 @@
 {
-    "color": "dog",
+    "color": "hot",
     "frames": 200,
     "sources":[
         {
             "position": {
-              "x": 20,
+              "x": 70,
               "y": 40
             },
             "size": 3,

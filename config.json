@@ -1,5 +1,5 @@
 {
-    "color": "hot",
+    "color": "viridis",
     "frames": 200,
     "sources":[
         {
@@ -8,11 +8,11 @@
               "y": 40
             },
             "size": 3,
-            "density": 50,
+            "density": 200,
             "velocity": {
-              "x": 4,
+              "x": 2,
               "y": -2,
-              "behaviour": "motor",
+              "behaviour": "zigzag vertical",
               "factor": 0.5
             }
         },

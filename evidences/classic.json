@@ -1,0 +1,47 @@
+{
+    "color": "viridis",
+    "frames": 200,
+    "sources":[
+        {
+            "position": {
+              "x": 20,
+              "y": 40
+            },
+            "size": 3,
+            "density": 200,
+            "velocity": {
+              "x": 2,
+              "y": -2,
+              "behaviour": "zigzag vertical",
+              "factor": 0.5
+            }
+        },
+        {
+            "position": {
+              "x": 40,
+              "y": 40
+            },
+            "size": 3,
+            "density": 200,
+            "velocity": {
+              "x": 3,
+              "y": -2,
+              "behaviour": "zigzag vertical",
+              "factor": 0.5
+            }
+        }
+    ],
+    "objects": [
+        {
+            "position": {
+              "x": 30,
+              "y": 10
+            },
+            "size": {
+              "height": 4,
+              "width": 6
+            },
+            "density": 400
+        }
+    ]
+}

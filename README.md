@@ -30,9 +30,9 @@ Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/b
 
 ![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/color-maps-02.png?raw=true)<br />
 
-For example, by having 'bone' as the `color` property in the json file, you get the following: <br />
+For example, by having 'hot' as the `color` property in the json file, you get the following: <br />
 
-![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/colors.gif)<br />
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/colors-02.gif)<br />
 
 - **Sources Placement** <br />
 
@@ -44,7 +44,33 @@ Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/b
 
 Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/blob/master/config.json) file, you can specify the position and shape of a solid object inside the fluid. <br />
 
-![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/objects02.gif)<br />
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/objects-03.gif)<br />
+
+- **Velocity Behaviours** <br />
+
+Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/blob/master/config.json) file, change the `behaviour` property inside `velocity` and write the behaviour of the velocity of said emitter you wish for. Supported options are: <br />
+
+- `zigzag vertical`,
+
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/objects-03.gif)
+
+- `zigzag horizontal`, that works the same as the above but horizontally.
+
+- `vortex`, 
+
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/vortex-example.gif)
+
+- `noise`,
+
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/noise-example.gif)
+
+- `fourier` (left), which is a bit like a zigzag (right) but noisier.
+
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/fourier-example.gif)
+
+- `motor`
+
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/motor-example.gif)
 
 ## Install FFmpeg on Windows
  Apart from the pip installation of ffmpeg, you need to install ffmpeg for your machine OS (in my case, Windows 10) by going to either of the following links:

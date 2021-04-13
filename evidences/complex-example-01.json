@@ -1,0 +1,108 @@
+{
+    "color": "bone",
+    "frames": 300,
+    "sources":[
+        {
+            "position": {
+              "x": 30,
+              "y": 43
+            },
+            "size": 3,
+            "density": 200,
+            "velocity": {
+              "x": 4,
+              "y": -2,
+              "behaviour": "motor",
+              "factor": 0.5
+            }
+        },
+        {
+            "position": {
+              "x": 15,
+              "y": 25
+            },
+            "size": 3,
+            "density": 200,
+            "velocity": {
+              "x": 1,
+              "y": -2,
+              "behaviour": "zigzag vertical",
+              "factor": 0.5
+            }
+        },
+        {
+            "position": {
+              "x": 30,
+              "y": 25
+            },
+            "size": 4,
+            "density": 200,
+            "velocity": {
+              "x": 6,
+              "y": -2,
+              "behaviour": "zigzag vertical",
+              "factor": 2.0
+            }
+        },
+        {
+            "position": {
+              "x": 45,
+              "y": 25
+            },
+            "size": 3,
+            "density": 200,
+            "velocity": {
+              "x": 1,
+              "y": -2,
+              "behaviour": "zigzag vertical",
+              "factor": 0.1
+            }
+        }
+    ],
+    "objects": [
+        {
+            "position": {
+              "x": 50,
+              "y": 40
+            },
+            "size": {
+              "height": 8,
+              "width": 2
+            },
+            "density": 400
+        },
+        {
+            "position": {
+              "x": 10,
+              "y": 40
+            },
+            "size": {
+              "height": 8,
+              "width": 2
+            },
+            "density": 400
+        },
+        {
+            "position": {
+              "x": 20,
+              "y": 7
+            },
+            "size": {
+              "height": 4,
+              "width": 6
+            },
+            "density": 400
+        },
+        {
+            "position": {
+              "x": 40,
+              "y": 7
+            },
+            "size": {
+              "height": 4,
+              "width": 6
+            },
+            "density": 400
+        }
+    ]
+}

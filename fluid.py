@@ -413,6 +413,7 @@ def main() -> None:
                     print("WARNING - Source position out of bounds. Source will be ignored.")
                 if eObjPos:
                     print("WARNING - Object position out of bounds. Object will be ignored fully or partially.")
+                print("SUCCESS - Animation video saved successfully. Look for test.mp4 in the root directory.")
 
         fig, ax = plt.subplots()
 

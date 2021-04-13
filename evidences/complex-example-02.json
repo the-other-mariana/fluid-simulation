@@ -1,0 +1,77 @@
+{
+    "color": "inferno",
+    "frames": 330,
+    "sources":[
+        {
+            "position": {
+              "x": 30,
+              "y": 30
+            },
+            "size": 4,
+            "density": 200,
+            "velocity": {
+              "x": 1,
+              "y": -2,
+              "behaviour": "noise",
+              "factor": 10
+            }
+        }
+    ],
+    "objects": [
+        {
+            "position": {
+              "x": 15,
+              "y": 20
+            },
+            "size": {
+              "height": 8,
+              "width": 2
+            },
+            "density": 400
+        },
+        {
+            "position": {
+              "x": 15,
+              "y": 33
+            },
+            "size": {
+              "height": 8,
+              "width": 2
+            },
+            "density": 400
+        },
+        {
+            "position": {
+              "x": 45,
+              "y": 20
+            },
+            "size": {
+              "height": 8,
+              "width": 2
+            },
+            "density": 400
+        },
+        {
+            "position": {
+              "x": 45,
+              "y": 33
+            },
+            "size": {
+              "height": 8,
+              "width": 2
+            },
+            "density": 400
+        },
+        {
+            "position": {
+              "x": 30,
+              "y": 10
+            },
+            "size": {
+              "height": 4,
+              "width": 5
+            },
+            "density": 400
+        }
+    ]
+}

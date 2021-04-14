@@ -96,8 +96,8 @@ class Fluid:
         for k in range(len(objects)):
             # objects = [np.zeros((4, 4), dtype=float)]
             o = objects[k]
-            obj = np.zeros((o['size']['height'], o['size']['width']), dtype=float)
-            pos = [o['position']['y'], o['position']['x']]
+            obj = np.zeros((int(o['size']['height']), int(o['size']['width'])), dtype=float)
+            pos = [int(o['position']['y']), int(o['position']['x'])]
 
             if pos[0] < 0 or pos[0] >= self.size or pos[1] < 0 or pos[1] >= self.size:
                 eObjPos = True
@@ -112,9 +112,7 @@ class Fluid:
                             continue
                         if i == -1 and -1 < j < len(obj[0]):
                             # top horizontal border
-                            #table[pos[0] + i, pos[1] + j, 1] = - 2 * table[pos[0] + i - 1, pos[1] + j, 1]
-                            #self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i - 1, pos[1] + j, 1])
-                            normal = Vector(0,1)
+                            normal = Vector(0, 1)
                             x = table[pos[0] + i - 1, pos[1] + j, 0]
                             y = table[pos[0] + i - 1, pos[1] + j, 1]
                             if x < eps and y < eps:
@@ -126,9 +124,6 @@ class Fluid:
 
                         if i == len(obj) and -1 < j < len(obj[0]):
                             # bottom horizontal border
-                            #table[pos[0] + i, pos[1] + j, 1] = - 2 * table[pos[0] + i + 1, pos[1] + j, 1]
-                            #self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i + 1, pos[1] + j, 1])
-
                             normal = Vector(0, -1)
                             x = table[pos[0] + i + 1, pos[1] + j, 0]
                             y = table[pos[0] + i + 1, pos[1] + j, 1]
@@ -141,9 +136,6 @@ class Fluid:
 
                         if j == -1 and -1 < i < len(obj):
                             # left vertical border
-                            #table[pos[0] + i, pos[1] + j, 0] = - 2 * table[pos[0] + i, pos[1] + j - 1, 0]
-                            #self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j - 1, 0])
-
                             normal = Vector(1, 0)
                             x = table[pos[0] + i, pos[1] + j - 1, 0]
                             y = table[pos[0] + i, pos[1] + j - 1, 1]
@@ -156,8 +148,6 @@ class Fluid:
 
                         if j == len(obj[0]) and -1 < i < len(obj):
                             # right vertical border
-                            #table[pos[0] + i, pos[1] + j, 0] = - 2 * table[pos[0] + i, pos[1] + j + 1, 0]
-                            #self.density[pos[0] + i, pos[1] + j] += d * abs(table[pos[0] + i, pos[1] + j + 1, 0])
                             normal = Vector(-1, 0)
                             x = table[pos[0] + i, pos[1] + j + 1, 0]
                             y = table[pos[0] + i, pos[1] + j + 1, 1]
@@ -393,11 +383,11 @@ def main() -> None:
                     eSourcePos = True
                     continue
 
-                inst.density[s['position']['y']:s['position']['y'] + s['size'], s['position']['x']:s['position']['x'] + s['size']] += abs(s['density'])  # add density into a 3*3 square
+                inst.density[int(s['position']['y']):int(s['position']['y']) + int(s['size']), int(s['position']['x']):int(s['position']['x']) + int(s['size'])] += abs(s['density'])
 
                 # v = [y, x] where y positive goes down
                 velBehaviour = getVelocityBehaviour(i, s['velocity']['y'], s['velocity']['x'], s['velocity']['behaviour'], s['velocity']['factor'], sources.index(s))
-                inst.velo[s['position']['y'] + dPos, s['position']['x'] + dPos] = velBehaviour
+                inst.velo[int(s['position']['y']) + dPos, int(s['position']['x']) + dPos] = velBehaviour
 
             inst.step()
             im.set_array(inst.density)
@@ -424,7 +414,7 @@ def main() -> None:
         # cmap=cm.coolwarm
         # plot vector field
         q = plt.quiver(inst.velo[:, :, 1], inst.velo[:, :, 0], scale=10, angles='xy')
-        anim = animation.FuncAnimation(fig, update_im, fargs=(ax, ), interval=1, frames=CONFIG['frames'])
+        anim = animation.FuncAnimation(fig, update_im, fargs=(ax, ), interval=1, frames=int(CONFIG['frames']))
 
         Writer = writers["ffmpeg"]
         writer = Writer(fps=30, metadata={'artist':'mariana'}, bitrate=1800)

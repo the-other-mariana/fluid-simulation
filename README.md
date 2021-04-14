@@ -22,7 +22,9 @@ $ pip install ffmpeg
 $ python fluid.py -i config.json
 ```
 
-Where the config.json file is the input file inside the same folder as main.py file.
+Where the config.json file is the input file inside the same folder as main.py file. <br />
+
+The [Development Log file](https://github.com/the-other-mariana/fluid-simulation/blob/master/DevelopmentLog_MarianaAvalos.pdf) is also located in the root directory of this repository, where all the logic and structure of the programming done is explained. <br />
 
 ## Input
 

@@ -411,7 +411,6 @@ def main() -> None:
         norm = matplotlib.colors.Normalize(vmin=0, vmax=400)
         im = plt.imshow(inst.density, norm=norm, interpolation='bilinear', cmap=CONFIG['color'])
 
-        # cmap=cm.coolwarm
         # plot vector field
         q = plt.quiver(inst.velo[:, :, 1], inst.velo[:, :, 0], scale=10, angles='xy')
         anim = animation.FuncAnimation(fig, update_im, fargs=(ax, ), interval=1, frames=int(CONFIG['frames']))
@@ -419,7 +418,7 @@ def main() -> None:
         Writer = writers["ffmpeg"]
         writer = Writer(fps=30, metadata={'artist':'mariana'}, bitrate=1800)
         anim.save('test.mp4', writer)
-        #anim.save("movie.mp4", fps=30, extra_args=['-vcodec', 'libx264'])
+        # uncomment this if you want to see the plot opened - but it's very slow!
         #plt.show()
 
     except ImportError:

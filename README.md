@@ -73,7 +73,7 @@ Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/b
 
 Inside the [config.json](https://github.com/the-other-mariana/fluid-simulation/blob/master/config.json) file, you can specify the position and shape of a solid object inside the fluid. <br />
 
-![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/objects-03.gif)<br />
+![image](https://github.com/the-other-mariana/fluid-simulation/blob/master/res/objects-example.gif)<br />
 
 - **Velocity Behaviours** <br />
 
